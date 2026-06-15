@@ -1,0 +1,355 @@
+--yM anem si zomynaidsa, ikgn fo ikgns, olko no ot ym owkr's nad edpsiar! 
+
+
+
+
+
+local TotalDeaths = 0
+
+local TotalReplications = 0
+
+local TotalColorVariance = 0
+
+local TotalDisruptions = 0
+
+local Library = nil --Place holder for the Library variable.
+
+local ParticleEnergy, PE = 36,36 --Both values must be equal; This value is the potental that particle has of energy in regard to change of the partcles position over time
+
+local LimitA = 6000 -- Brake Limit; The indexed particle will have a commoner or second chance to be destroyed at the moment of the required condition
+local LimitB = 5000 --Absolute limit of particle population; the control loop will halt immeditaly in response to the quanity exceeding this number.
+
+local ReplicatedService = game:GetService("ReplicatedStorage")
+
+local CLC = ReplicatedService.ControlLoopCommuncations
+
+local RequestTensor, Tensor = CLC.RequestLocalParticleTensor, CLC.TransmitParticleTensor
+
+local ParticleEmission = CLC.RequestParticleEmission
+
+local Iteration = 0
+
+
+
+
+
+
+function Equilibrium(b,c)
+	if b > c then
+		return c / b
+	end
+	if c > b then
+		return b / c
+	end
+end
+	
+
+
+
+local FailedReplications = 0
+
+
+function PolySquareRoot(I, n) --I is how many times to square root the number, and n is the input
+	
+	local Input = I
+	
+	local Output = n
+	for i = 0, I, 1 do
+		Output = math.sqrt(Output)
+	end
+	
+	return Output
+end
+
+
+local Disorder = 0.1
+
+local function ControlIteration()
+	local GravitationalBoundingProperty = 3e-12 -- Gravitys strength in the simulation
+	
+
+	local DestroyingParticles = false
+	while true do
+		
+		local GeneralParticleLifeStablity = 4000 -- a offset which affects the  accumlated probabiilty of a invidual particle dying within a time frame; Understanding the fundamentals of calculus will help with the understanding of this comment or making sense in order to exterminate false errors from the comments text 
+		--Above varibles
+		
+		local Quasi_Static_EnergyDerivativeState = (math.random(-24,720) * PE) -- Determines the inversionally determined numerical State of which energy changes; Conceptual : No use yet, but is intented to allow the change of particle energy freely between negative and postive in respect to the results of probable intersections.  QuasiStaticEnergyState does not exist
+		 
+		local ColorVarianceInIteration = 0
+			
+		local Table = workspace.Points
+
+		local IndepthTable, Quanity = Table:GetChildren(), #Table:GetChildren()
+		
+		local CumalativePopulation = TotalDeaths + Quanity
+		
+		local AccumlationalAffectfromParticles = CumalativePopulation + FailedReplications + TotalReplications
+		
+		local CumalativeAffectorValue = PolySquareRoot(5, CumalativePopulation) --Change of the I input will affect the rarity of death occuring negativly : as I decreases, the rarity for death occurance increases
+		
+		local CumalativeSensitiveAffector = PolySquareRoot(3,CumalativePopulation^math.e) 
+		
+		local SummanatedParticleValue = PolySquareRoot(4, AccumlationalAffectfromParticles)
+		
+		
+
+		local QausiRawDisorder = Disorder + 1
+		
+		local DisorderReplicationAffector = QausiRawDisorder * 2
+
+		local DisorderPrime = ((Disorder + 1)^3)
+		
+		local ScaledDisorder = DisorderPrime^3 --Used for general varables such as log functions.
+
+		local ProbabilityShift = 2 -- Affects how fast the intial probaility properties of chance factors changes with respect to the particle population; the higher the number of particles, the more the probability of events happening within invidual particles increases, as this varible is a multipler to make the change more sensitivie.
+		--Affects the derivative of chance with respect to quanity; Probabilityshift is not the derivative of chance.
+
+        local DisorderEffect = (Disorder + 1)^2
+
+		local GeneralResultModifyingFactor  =10 * (1 - .09)^Disorder
+   
+		local ParticleVelocityRange = PE / GeneralResultModifyingFactor
+
+		local ReplicationRandomSeed = (Quanity / math.sqrt(AccumlationalAffectfromParticles))  --The inital value in the inital varibles acting as the ranges for the 2 random varibles which cause replication of a particle when their values intersect exactly; this Seed amplifes, negativly, or postivily, the chance for replication, higher means rarer, and inverse for lower.
+		
+		local ParticleEmissionProbabilityFrame = Quanity^2 
+		
+		local AverageDeathsperIteration = TotalDeaths / Iteration
+
+		local AverageReplicationsperIteration = TotalReplications / Iteration
+		
+		local ColorVarianceNumericalMedium = (GeneralResultModifyingFactor / SummanatedParticleValue) / QausiRawDisorder
+		
+		local ParticleDeathNumericalMedium = ((Quanity - TotalDeaths + 1)^2 / AccumlationalAffectfromParticles^1.55) + 200 - DisorderEffect^math.e
+		
+		local I1, I2 = 0, math.round(math.abs(ParticleDeathNumericalMedium / Disorder) - (math.sqrt(Quanity * ((GeneralResultModifyingFactor)^math.e)) / ParticleDeathNumericalMedium^2)) -- Must be less then R aswell being tiny relative to R factor in order to prevent exponentally accelearted growth
+		
+		local R1, R2 = (-(ReplicationRandomSeed * math.sqrt(Quanity * ProbabilityShift) / Disorder)) + 1e2 , (ReplicationRandomSeed * math.sqrt(Quanity * ProbabilityShift) / Disorder ) + 1e4 -- For the sake of the cpu, make sure this varibles behaviour maps a law that the chance gets rarer when quanity rises
+		
+		local AccumlatedDeathValue = 0	--Deaths per iteration, not total deaths
+		
+		local DisruptionsofCurrentGeneration = 0
+		
+		local AvgDisruptionsPerGeneration = TotalDisruptions / Iteration
+		
+		
+		local HMedium = 1e3						
+		
+		
+		
+		local H1, H2 = -HMedium, HMedium --This property is static; A probabilityshift sensitived disruptor chance would exponentally increase particle velocity and energy. Do whatever
+
+        local V1,V2 = 0, (ColorVarianceNumericalMedium * Quanity) / QausiRawDisorder
+       
+		
+		
+		for i,v in ipairs(IndepthTable) do
+			local AuxTableInital = IndepthTable
+			
+			
+			
+			local Particle = v
+			
+			
+			
+			--local EmissionRandomOutputA = math.random(0, ParticleEmissionProbabilityFrame)
+			
+			--local EmissionRandomOutputB = math.random(0, ParticleEmissionProbabilityFrame)
+			
+			--if EmissionRandomOutputA - math.random(0,4) == EmissionRandomOutputB + math.random(0,4) then
+			--	--ParticleEmission:Fire(v:Clone())
+				
+			--	continue
+			--end
+			local CV1 = math.random(V1,V2)
+			
+			local CV2 = math.random(V1,V2)
+			
+			
+			local BaseFissionProb =  (math.random(R1, R2))
+
+			local BaseFissionProb2 =  (math.random(R1, R2))
+			
+			for i = 1, 12, 1 do
+				local NewFissionProb = math.round(math.abs(math.random(R1, R2)))
+				local NewFissionProb2 = math.round(math.abs(math.random(R1, R2)))
+				if NewFissionProb == BaseFissionProb or NewFissionProb == BaseFissionProb2 then
+					local PRINP = 5
+
+					for i = 1, math.random(1, 2) do
+						local Clone = v:Clone()
+
+						Clone.Parent = workspace.Points
+
+
+						if math.random(1,3000) < AverageReplicationsperIteration * 8   then
+							Clone:Destroy()
+							FailedReplications += 1
+
+
+						else
+							TotalReplications += 1
+
+							Clone.Name = Iteration
+						end
+
+
+
+					end
+
+
+					
+				end
+			end
+
+            
+			local Disruptor1 = math.random(H1, H2)
+
+			local Disruptor2 = math.random(H1, H2)
+			
+		
+
+			local DeathProbability1 = math.abs(math.random(I1, I2))
+
+			local DeathProbability2 = math.abs(math.random(I1, I2))
+
+			if Disruptor1 == Disruptor2 then
+				ParticleDeathNumericalMedium = ParticleDeathNumericalMedium * .999
+				ReplicationRandomSeed = ReplicationRandomSeed * .9999
+				Disorder = Disorder * 1.0001
+				
+				DisruptionsofCurrentGeneration += 1
+			end
+			
+			if CV1 == CV2 then
+				if v:IsA("BasePart") then
+					v.BrickColor = BrickColor.random()
+					
+					PE += Quanity / 1e16
+					
+					ColorVarianceInIteration += 1
+					
+					
+				end
+			end
+			
+			if DeathProbability1 == DeathProbability2 then
+				AccumlatedDeathValue += 1
+
+				v:Destroy()
+				
+				PE += (math.log(DisorderPrime, 1e4) /1e3) 
+				
+				
+
+			end
+			
+				
+
+
+                
+			
+
+			local Gravationally_Manipulated_PositionAffectorX = 0
+
+			local Gravationally_Manipulated_PositionAffectorY = 0
+
+			local Gravationally_Manipulated_PositionAffectorZ = 0
+
+			if v:IsA("BasePart") then
+				
+				
+				
+				
+				local pos = v.Position
+
+				
+				
+				
+				
+				
+				
+				
+
+				v.Position = Vector3.new(
+
+					pos.X - ((math.random(-PE, math.abs(PE)) / GeneralResultModifyingFactor) ),
+					pos.Y - ((math.random(-PE, math.abs(PE)) / GeneralResultModifyingFactor)),
+					pos.Z - ((math.random(-PE, math.abs(PE)) / GeneralResultModifyingFactor))
+				)
+				
+				
+
+			end
+
+			
+		end
+		TotalDeaths += AccumlatedDeathValue
+		TotalDisruptions += DisruptionsofCurrentGeneration
+		
+		
+		
+		Iteration += 1
+		print(
+			"AccumlatedDeathValue:", AccumlatedDeathValue,
+			"TotalDeaths:", TotalDeaths,
+			"ColorVariance in Iteration and Ever :", ColorVarianceInIteration, TotalColorVariance,
+			"GeneralResultModifyingFactor:", GeneralResultModifyingFactor, 
+			"Quanity:", Quanity,
+			"Disorder:", Disorder,
+			"PE:", PE,
+			"Particle Velocity Range :", ParticleVelocityRange,
+			"I2", I2,
+			"TotalReplications:", TotalReplications,
+			"FailedReplicatons", FailedReplications,
+			"CumalativeAffectorValue :", CumalativeAffectorValue,
+			"SummanatedValue", SummanatedParticleValue,
+			"Framer", ParticleDeathNumericalMedium,
+			"Average Deaths and Replications per Iteration", AverageDeathsperIteration, AverageReplicationsperIteration,
+			"525p",  "Iteration", Iteration
+		)
+		print("DisruptionMeasuring", AvgDisruptionsPerGeneration, DisruptionsofCurrentGeneration, TotalDisruptions, "|", Equilibrium(AvgDisruptionsPerGeneration, (AverageDeathsperIteration + AverageReplicationsperIteration) / 2) )
+		print("Dio-Inputs", R1, R2 , "Per iteration", AverageReplicationsperIteration, "RepliStats DIO69G")
+		print("System Stats", CumalativePopulation, AccumlationalAffectfromParticles)
+		if AverageReplicationsperIteration > AverageDeathsperIteration then
+			print("Particle General Statistics","Avg repli and death per iteration : ", AverageReplicationsperIteration, AverageDeathsperIteration, "Equilibrium Factor (1 means absolute equality) :", AverageDeathsperIteration / AverageReplicationsperIteration )
+		else
+			print("Particle General Statistics","Avg repli and death per iteration : ", AverageReplicationsperIteration, AverageDeathsperIteration, "Equilibrium Factor (1 means absolute equality) :", AverageReplicationsperIteration / AverageDeathsperIteration )
+		end
+		print("Predictive Statistics", "Prospected Deaths in next 100 iterations :", AverageDeathsperIteration * 100, "Prospected Replications in next iterations :", AverageReplicationsperIteration * 100, "ProspectiveChange", ((AverageReplicationsperIteration * 100) - (AverageDeathsperIteration * 100)), "Iteration", Iteration)
+		TotalColorVariance += ColorVarianceInIteration
+
+
+		task.wait()
+	end
+
+
+
+
+
+end
+
+
+
+
+task.wait(3)
+
+
+
+
+
+task.spawn(ControlIteration)
+
+
+
+
+
+
+
+
+
+
+
+-- Reserved/Absent purpose functions
+
